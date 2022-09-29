@@ -87,7 +87,7 @@ const Movies = ({ caption, hasTypeof, fetchUrl }) => {
               typeMovie && "bg-white text-black"
             } text-white`}
           >
-            Movies
+            Movies Test
           </button>
           <button
             onClick={handleType}
