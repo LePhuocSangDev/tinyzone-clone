@@ -5,13 +5,16 @@ import { BsCameraVideoFill, BsFillPlayFill } from "react-icons/bs";
 import axios from "../axios";
 import MovieCards from "../components/MovieCards";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { addToLikeList, selectUser } from "../features/userSlice";
 
 const TrailerPage = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[3];
   const mediaType = location.pathname.split("/")[2];
+  const dispatch = useDispatch();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -19,23 +22,24 @@ const TrailerPage = () => {
 
   const fetchData = async () => {
     const request = await axios.get(
-      `/${mediaType}/${id}?api_key=eaefff65310f516d5f7ac969f0d75a3f&language=en-US`
+      `/${mediaType}/${id}?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US`
     );
     return request.data;
   };
   const fetchSimilar = async () => {
     const request = await axios.get(
-      `/${mediaType}/${id}/similar?api_key=eaefff65310f516d5f7ac969f0d75a3f&language=en-US&page=1`
+      `/${mediaType}/${id}/similar?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&page=1`
     );
     return request.data.results;
   };
   const fetchTrailer = async () => {
     const request = await axios.get(
-      `/${mediaType}/${id}/videos?api_key=eaefff65310f516d5f7ac969f0d75a3f&language=en-US`
+      `/${mediaType}/${id}/videos?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US`
     );
     return request.data.results;
   };
   const { data: movie, isLoading } = useQuery(["movieDetails"], fetchData);
+  console.log(movie);
   const { data: similarMovies } = useQuery(["similarMovies"], fetchSimilar);
   const { data: trailer } = useQuery(["trailer"], fetchTrailer);
   return (
@@ -49,11 +53,14 @@ const TrailerPage = () => {
               Home
             </Link>
             /<span className="text-white">Movie</span>/
-            <span>{movie?.original_title || movie?.name}</span>
+            <span className="text-white">
+              {movie?.original_title || movie?.name}
+            </span>
           </p>
           <div className="h-[400px] lg:h-[500px]">
             <iframe
               id="iframe-embed"
+              title="trailer"
               width="100%"
               height="100%"
               scrolling="no"
@@ -76,26 +83,34 @@ const TrailerPage = () => {
             >
               Watch Now
             </a>
-            <button className="w-full px-2 py-2 rounded-sm text-center bg-white">
+            <button
+              onClick={() => dispatch(addToLikeList(movie))}
+              className="w-full px-2 py-2 rounded-sm text-center bg-white"
+            >
               + Add favorite
             </button>
           </div>
           {/* for mobile */}
           <div>
             <div className="flex gap-4 border-b-4 border-b-[#333] pb-6">
-              <div className="flex-1 lg:flex-col gap-2 hidden lg:block">
+              <div className="flex-1  lg:flex-col gap-8 hidden lg:block ">
                 <img
-                  src={`https://image.tmdb.org/t/p/w500/${movie?.backdrop_path}`}
+                  src={`https://image.tmdb.org/t/p/w500/${
+                    movie?.backdrop_path || movie?.poster_path
+                  }`}
                   alt=""
-                  className="w-full h-[80%]"
+                  className="h-auto"
                 />
-                <p>
-                  <span className="font-bold text-md text-white">9.2</span>{" "}
-                  <span className="text-[#aaa] text-sm">/ 29 voted</span>
-                </p>
-                <div className="relative h-[5px] rounded-md bg-[#333]">
-                  <div className="absolute h-[5px] w-[92%] bg-[#28a745]"></div>
+                <div className="py-4">
+                  <p>
+                    <span className="font-bold text-md text-white">9.2</span>{" "}
+                    <span className="text-[#aaa] text-sm">/ 29 voted</span>
+                  </p>
+                  <div className="relative h-[5px] rounded-md bg-[#333]">
+                    <div className="absolute h-[5px] w-[92%] bg-[#28a745]"></div>
+                  </div>
                 </div>
+
                 <div className="flex gap-2 justify-evenly mt-2">
                   <button className="flex gap-2 rounded-md px-4 py-1 bg-white border items-center ">
                     <AiOutlineLike
@@ -121,15 +136,17 @@ const TrailerPage = () => {
                     HD
                   </button>
                   <button className="p-1 rounded-sm text-black bg-[#ffc107]">
-                    IMDB: 6.5
+                    {movie?.vote_average.toFixed(1)}
                   </button>
                 </div>
                 <p className="text-sm">{movie?.overview}</p>
-                <div className="flex">
+                <div className="flex flex-col lg:flex-row">
                   <div className="flex-1">
                     <p className="font-bold">
-                      Release:{" "}
-                      <span className="font-thin">{movie?.release_date}</span>
+                      {movie?.release_date ? "Release:" : "Number of seasons:"}{" "}
+                      <span className="font-thin">
+                        {movie?.release_date || movie?.number_of_seasons}
+                      </span>
                     </p>
                     <p className="font-bold flex gap-2">
                       Genre:{" "}
@@ -140,8 +157,12 @@ const TrailerPage = () => {
                       ))}
                     </p>
                     <p className="font-bold">
-                      Runtime:{" "}
-                      <span className="font-thin">{movie?.runtime}</span>
+                      {movie?.runtime ? "Runtime:" : "Number of episodes:"}{" "}
+                      <span className="font-thin">
+                        {movie?.runtime
+                          ? movie?.runtime + " minutes"
+                          : movie?.number_of_episodes + " episodes"}
+                      </span>
                     </p>
                   </div>
                   <div className="flex-1">
@@ -152,13 +173,13 @@ const TrailerPage = () => {
                     <p className="font-bold">
                       Language:{" "}
                       <span className="font-thin">
-                        {movie?.spoken_languages[0].english_name}
+                        {movie?.spoken_languages[0]?.english_name}
                       </span>
                     </p>
                     <p className="font-bold">
                       Production Company:{" "}
                       <span className="font-thin">
-                        {movie?.production_companies[0].name}
+                        {movie.production_companies[0]?.name}
                       </span>
                     </p>
                   </div>
@@ -178,20 +199,20 @@ const TrailerPage = () => {
               </div>
             </div>
             <div className="flex gap-4 flex-wrap pt-4">
-              <a href="" className="block p-1 bg-white rounded-md">
-                Lorem ipsum dolor, sit amet consectetur adipisici
+              <a href="/" className="block p-1 bg-white rounded-md">
+                Watch {movie.title} Online free
               </a>
-              <a href="" className="block p-1 bg-white rounded-md">
-                Lorem ipsum dolor, sit amet consectetur adipisici
+              <a href="/" className="block p-1 bg-white rounded-md">
+                {movie.title} Online free
               </a>
-              <a href="" className="block p-1 bg-white rounded-md">
-                Lorem ipsum dolor, sit amet consectetur adipisici
+              <a href="/" className="block p-1 bg-white rounded-md">
+                where to watch {movie.title}
               </a>
-              <a href="" className="block p-1 bg-white rounded-md">
-                Lorem ipsum dolor, sit amet consectetur adipisici
+              <a href="/" className="block p-1 bg-white rounded-md">
+                {movie.title} movie online free
               </a>
-              <a href="" className="block p-1 bg-white rounded-md">
-                Lorem ipsum dolor, sit amet consectetur adipisici
+              <a href="/" className="block p-1 bg-white rounded-md">
+                {movie.title} free online{" "}
               </a>
             </div>
             <SocialIcons />
@@ -253,15 +274,8 @@ const TrailerPage = () => {
               {similarMovies?.map((movie, index) => (
                 <MovieCards
                   mediaType={movie?.media_type}
-                  id={movie.id}
+                  movie={movie}
                   key={index}
-                  title={
-                    movie?.title ||
-                    movie?.original_title ||
-                    movie?.name ||
-                    movie?.original_name
-                  }
-                  image={movie?.backdrop_path || movie?.poster_path}
                 />
               ))}
             </div>

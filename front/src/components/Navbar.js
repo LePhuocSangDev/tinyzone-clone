@@ -30,7 +30,7 @@ const Navbar = () => {
         </li>
       </ul>
       {/* mobile */}
-      <div className="md:hidden relative menu flex items-center justify-center p-2">
+      <div className="md:hidden relative menu flex items-center justify-center p-2 mr-5">
         <button
           className={`flex text-md bg-white p-1 rounded-sm items-center ${
             show && "text-red-500"
@@ -42,7 +42,7 @@ const Navbar = () => {
         </button>
       </div>
       {show && (
-        <ul className="md:hidden absolute top-[60px] w-[50%] right-[20px] p-2 bg-white text-center rounded-[5px]">
+        <ul className="md:hidden absolute top-[60px] w-[50%] right-[20px] p-2 bg-white text-center rounded-[5px] mr-2">
           <li className="p-4 text-l">
             <Link to="/Home">Home</Link>
           </li>

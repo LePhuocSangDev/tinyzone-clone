@@ -1,22 +1,32 @@
 import React, { useState } from "react";
 import { AiFillPlayCircle } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const MovieCards = ({ image, title, size, id, mediaType }) => {
+const MovieCards = ({ movie, mediaType, size }) => {
   const [show, setShow] = useState(false);
+  const navigate = useNavigate();
+  const refreshPage = () => {
+    setTimeout(() => navigate(0), 50);
+  };
 
   return (
     // to handle if there might be no mediaType
-    <Link to={`/watch${!mediaType ? "/movie" : "/" + mediaType}/${id}`}>
+    <Link
+      to={`/watch${
+        mediaType === "movie" || !mediaType ? "/movie" : "/" + mediaType
+      }/${movie?.id}`}
+      className="block"
+    >
       <div
         onMouseOver={() => setShow(true)}
         onMouseOut={() => setShow(false)}
+        onClick={() => refreshPage()} // load again to prevent no loading similar movie when click
         className={`${
-          size === "lg" && "w-[160px] lg:w-[250px]"
+          size === "lg" && "w-[25vw] min-w-[200px]  "
         } m-2 min-w-[35%] sm:min-w-[30%] md:min-w-[25%] hover:opacity-60 cursor-pointer`}
       >
         {/* // Play button */}
-        <div className="relative">
+        <div className="relative w-full h-full">
           <div
             className={`${
               !show && "hidden"
@@ -25,21 +35,27 @@ const MovieCards = ({ image, title, size, id, mediaType }) => {
             <AiFillPlayCircle />
           </div>
           <img
-            className="w-full h-[240px] lg:h-[281px] 
-       "
-            src={`https://image.tmdb.org/t/p/w500/${image}`}
-            alt=""
+            className="w-full h-full object-cover"
+            src={`https://image.tmdb.org/t/p/original/${
+              movie?.backdrop_path || movie?.poster_path
+            }`}
+            alt="/"
           />
         </div>
         <div>
-          <h4 className="text-white font-extrabold text-md lg:py-2">{title}</h4>
+          <h4 className="text-white font-[600] text-md lg:py-2">
+            {movie?.title ||
+              movie?.original_title ||
+              movie?.name ||
+              movie?.original_name}
+          </h4>
           <div className="text-[#aaa] text-[12px] lg:text-sm flex items-center ">
             <span className="p-[2px] border-white border rounded-[3px] mx-1">
               HD
             </span>
-            <span className="mx-2">SS3</span>
+            <span className="mx-2">SS {movie?.number_of_seasons}</span>
             <span className="mx-2 text-2xl ">&#8226;</span>
-            <span className="mx-2">Eps 6</span>
+            <span className="mx-2">Eps {movie?.number_of_episodes}</span>
           </div>
         </div>
       </div>
