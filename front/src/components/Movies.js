@@ -1,70 +1,52 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import axios from "../axios";
+import moviesRequest from "../axios";
 import MovieCards from "./MovieCards";
 
-const Movies = ({ caption, hasTypeof, fetchUrl }) => {
-  const getData = async () => {
-    const request = await axios.get(fetchUrl);
-    setDataForFilter(request.data.results);
-    return request.data.results;
-  };
-  const { data } = useQuery(["moviesByType"], getData);
+const Movies = ({ caption, hasTypeof, fetchUrl, type }) => {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    const getData = async () => {
+      const request = await moviesRequest(fetchUrl);
+      setData(request.data.results);
+    };
 
+    getData();
+  }, [fetchUrl]);
+  console.log(data);
   const [typeMovie, setTypeMovie] = useState(false);
   const [typeTvShow, setTypeTvShow] = useState(true);
-  const [dataForFilter, setDataForFilter] = useState([]);
-  const movies = dataForFilter?.filter((movie) => movie.media_type === "movie");
-  const tvShows = dataForFilter?.filter((movie) => movie.media_type === "tv");
+  const movies = data?.filter((movie) => movie.media_type === "movie");
+  const tvShows = data?.filter((movie) => movie.media_type === "tv");
 
   const handleType = () => {
     setTypeMovie((prevTypeMovie) => !prevTypeMovie);
     setTypeTvShow((prevTypeTvShow) => !prevTypeTvShow);
   };
+
   const handleRender = () => {
     if (hasTypeof && typeMovie) {
       return movies?.map((movie, index) => (
         <MovieCards
-          mediaType={movie?.media_type}
+          mediaType={movie?.media_type || type}
           key={index}
-          title={
-            movie?.title ||
-            movie?.original_title ||
-            movie?.name ||
-            movie?.orginal_name
-          }
-          image={movie?.backdrop_path || movie?.poster_path}
-          id={movie.id}
+          movie={movie}
         />
       ));
     } else if (hasTypeof && typeTvShow) {
       return tvShows?.map((movie, index) => (
         <MovieCards
-          mediaType={movie?.media_type}
+          mediaType={movie?.media_type || type}
           key={index}
-          title={
-            movie?.title ||
-            movie?.original_title ||
-            movie?.name ||
-            movie?.orginal_name
-          }
-          image={movie?.backdrop_path || movie?.poster_path}
-          id={movie.id}
+          movie={movie}
         />
       ));
     } else {
       return data?.map((movie, index) => (
         <MovieCards
-          mediaType={movie?.media_type}
+          mediaType={movie?.media_type || type}
           key={index}
-          title={
-            movie?.title ||
-            movie?.original_title ||
-            movie?.name ||
-            movie?.orginal_name
-          }
-          image={movie?.backdrop_path || movie?.poster_path}
-          id={movie.id}
+          movie={movie}
         />
       ));
     }
@@ -76,22 +58,16 @@ const Movies = ({ caption, hasTypeof, fetchUrl }) => {
         <h2 className="inline text-2xl text-white font-bold text-">
           {caption}
         </h2>
-        <div
-          className={`${
-            hasTypeof ? "inline-block" : "hidden"
-          } border border-white  mx-2`}
-        >
+        <div className={`${hasTypeof ? "inline-block" : "hidden"} mx-2`}>
           <button
             onClick={handleType}
-            className={`px-2 h-full ${
-              typeMovie && "bg-white text-black"
-            } text-white`}
+            className={`px-2 ${typeMovie && "bg-white text-black"} text-white`}
           >
             Movies
           </button>
           <button
             onClick={handleType}
-            className={`border-l border-l-black h-full px-2 ${
+            className={`h-full px-2 ${
               typeTvShow && "bg-white text-black"
             } text-white`}
           >

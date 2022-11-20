@@ -22,12 +22,12 @@ const LandingPage = () => {
               placeholder="Enter keywords"
               type="text"
             />
-            <a
+            <Link
               to="/home"
               className="text-white px-6 py-2 bg-[#d41f1c] flex items-center rounded-r-[4px] font-bold "
             >
               <AiOutlineSearch />
-            </a>
+            </Link>
           </div>
           <SocialIcons />
           <Link
@@ -49,53 +49,70 @@ const LandingPage = () => {
       </div>
       <div className="text-white mx-2 my-4">
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus quam
-          soluta unde quidem enim, nesciunt ipsum tempora fugiat voluptatem est
-          reprehenderit quia consectetur, consequuntur eos?
+          Tinyzone is the best one could ask for when it comes to free online
+          movies streaming sites. We offer hundreds of thousands of free movies
+          and TV shows in 1080p and 720p, with multiple subtitles and fast
+          loading speed. As the site is mobile-friendly and Chromecast
+          supported, Tinyzone can be your companion no matter where you are,
+          which device you use, and when the mood strikes you.
         </p>
         <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum qui
-          dolore laudantium, illo iusto exercitationem.
+          At Tinyzone, users come first. Therefore, please rest assured that
+          there won't be any fraud or clickbait, and your requests and messages
+          will all be appreciated.
         </p>
         <h2 className="font-extrabold pt-4">What is Tinyzone</h2>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio
-          dignissimos eveniet mollitia molestiae eum quae totam quas corporis
-          pariatur. Quas quidem enim explicabo quos! Culpa?
-        </p>
-        <h2 className="font-extrabold pt-4">Lorem ipsum dolor sit amet.</h2>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aut maxime
-          et optio nobis quidem commodi! Distinctio illum sed ut dolores saepe,
-          provident omnis cum qui impedit, quo nemo!
-        </p>
-        <h2 className="font-extrabold pt-4">Lorem ipsum dolor sit amet.</h2>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aut maxime
-          et optio nobis quidem commodi! Distinctio illum sed ut dolores saepe,
-          provident omnis cum qui impedit, quo nemo!
-        </p>
-        <h2 className="font-extrabold pt-4">Lorem ipsum dolor sit amet.</h2>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aut maxime
-          et optio nobis quidem commodi! Distinctio illum sed ut dolores saepe,
-          provident omnis cum qui impedit, quo nemo!
+          Tinyzone is the place to go when you are looking for free movies and
+          TV shows to watch. Whatever you can ask from a free streaming site,
+          you can find it at Tinyzone. We have an extensive content library, HD
+          resolution, English and Spanish subtitles, seamless streaming, and
+          other outstanding features, to make sure you can get a premium
+          watching experience at Tinyzone without having to pay a dime.
         </p>
         <h2 className="font-extrabold pt-4">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Watch Movies online free on Tinyzone
+        </h2>
+        <p>
+          We host a huge collection of movies and TV shows with up to 25,000
+          titles in 1080p and 720p. All of them are completely free to access
+          without any account or registration needed. Your experience can be
+          simple and painless. You only need to give the website a visit, search
+          for a movie to watch, hit the Play button, enjoy the content, and
+          leave as you please. All you need is the Internet, a device, and your
+          interest to indulge yourself in the cinematic world.
+        </p>
+        <h2 className="font-extrabold pt-4">
+          Is Tinyzone Safe? Is it Legal to use Tinyzone?
+        </h2>
+        <p>
+          Tinyzone is a safe place to stream movies and TV shows online and you
+          can make it safer by having your VPN and AdBlock on. You can stay
+          completely anonymous while visiting the site by leaving no name,
+          email, credit card number, and even IP address. At Tinyzone, you can
+          let the guard down and enjoy our content without worries.
+        </p>
+        <h2 className="font-extrabold pt-4">Tinyzone Proxy sites?</h2>
+        <p>
+          Tinyzone has no Proxy site now. Please be aware of fake sites, they
+          try to be us but they aren't us! To stay updated for the news about
+          proxy site, please follow our Twitter page.
+        </p>
+        <h2 className="font-extrabold pt-4">
+          Why Tinyzone should be your movies streaming site?
         </h2>
         <ol className="ml-8 my-4" type="1" start="1">
-          <li>1. Coffee</li>
-          <li>2. Tea</li>
-          <li>3. Milk</li>
-          <li>4. Milk</li>
-          <li>5. Milk</li>
-          <li>6. Milk</li>
-          <li>7. Milk</li>
+          <li>1. Safety</li>
+          <li>2. Amazing user-interface</li>
+          <li>3. Impressive content library</li>
+          <li>4. Streaming experience</li>
+          <li>5. Device compatibility</li>
+          <li>6. Ads and popups</li>
+          <li>7. Great customer care</li>
         </ol>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi,
-          tenetur.
+          If you are happy with our service, please help us spread the words and
+          let your friends know about Tinyzone too. Thank you!
         </p>
         <Link
           to="home"

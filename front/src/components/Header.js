@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Header = () => {
-  const user = useSelector(selectUser);
+  const { userInfo } = useSelector(selectUser);
   const [show, setShow] = useState(false);
   const handleShow = () => {
     setShow(!show);
@@ -44,16 +44,20 @@ const Header = () => {
         </div>
         <div className="w-full mr-2 hidden md:flex">
           <input
-            className="w-[90%] p-1 rounded-l-[4px] border-none outline-none bg-[#121212]"
+            className="w-[90%] py-1 px-2 rounded-l-[4px] border-none outline-none bg-[#121212]"
             placeholder="Enter keywords"
             type="text"
           />
-          <a className="text-white px-6 py-2 bg-[#4d4c4b] rounded-r-[4px] cursor-pointer ">
+          <button className="text-white px-6 py-2 bg-[#4d4c4b] rounded-r-[4px] cursor-pointer ">
             <AiOutlineSearch />
-          </a>
+          </button>
         </div>
         <Link to="/login" className="block">
-          <button className={`${user && "hidden"} flex items-center `}>
+          <button
+            className={`${
+              userInfo && "hidden"
+            } flex items-center hover:opacity-60 `}
+          >
             <CgProfile
               style={{
                 marginRight: "8px",
@@ -62,15 +66,16 @@ const Header = () => {
             Login
           </button>
         </Link>
-        <Link className={`${user ? "flex" : "hidden"}`} to="/">
-          <button className="flex items-center">
-            <CgProfile
-              style={{
-                marginRight: "8px",
-              }}
-            />
-            My profile
-          </button>
+        <Link
+          className={`${userInfo ? "flex" : "hidden"} items-center mr-2`}
+          to="/profile"
+        >
+          <CgProfile
+            style={{
+              marginRight: "8px",
+            }}
+          />
+          {userInfo?.username}
         </Link>
       </div>
       <div className=" w-full flex md:hidden ">
@@ -79,12 +84,12 @@ const Header = () => {
           placeholder="Enter keywords"
           type="text"
         />
-        <a
+        <Link
           to="/home"
           className="text-white px-6 py-2 bg-[#4d4c4b] rounded-r-[4px] cursor-pointer "
         >
           <AiOutlineSearch />
-        </a>
+        </Link>
       </div>
     </div>
   );

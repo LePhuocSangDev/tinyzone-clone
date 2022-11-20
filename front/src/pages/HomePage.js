@@ -1,30 +1,31 @@
 import React, { useEffect, useRef, useState } from "react";
-import SocialIcons from "./SocialIcons";
+import SocialIcons from "../components/SocialIcons";
 import { GoBroadcast } from "react-icons/go";
-import MovieCards from "./MovieCards";
+import MovieCards from "../components/MovieCards";
 import axios from "../axios";
 import requests from "../request";
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
-import Movies from "./Movies";
+import Movies from "../components/Movies";
 import { useQuery } from "@tanstack/react-query";
-import Loader from "./Loader/Loader";
+import Loader from "../components/Loader/Loader";
+import { toast } from "react-toastify";
 
 const Content = () => {
-  const sliderRef = useRef();
-  console.log(sliderRef.current?.getBoundingClientRect());
   const fetchData = async () => {
     const request = await axios.get(requests.fetchTopRated);
     return request.data;
   };
   const { data, isLoading, isError } = useQuery(["movies"], fetchData);
-
   const movies = data?.results;
   const handleNext = () => {
-    sliderRef.current.style.transform = `translateX(500px)`;
+    const slider = document.getElementById("slider");
+    slider.scrollLeft = slider.scrollLeft + 500;
   };
   const handlePrev = () => {
-    sliderRef.current.style.transform = `translateX(-500px)`;
+    const slider = document.getElementById("slider");
+    slider.scrollLeft = slider.scrollLeft - 500;
   };
+
   return (
     <>
       {" "}
@@ -60,7 +61,7 @@ const Content = () => {
           <SocialIcons />
           <div>
             <h2 className="text-xl font-extrabold text-white my-4">
-              Most Watched
+              Top Rated
             </h2>
             <div className="relative">
               <button
@@ -76,22 +77,15 @@ const Content = () => {
                 />
               </button>
               <div
-                className=" flex overflow-x-auto container translateX(0px) transition-all duration-1000 ease"
-                ref={sliderRef}
+                className="flex overflow-x-scroll scroll-smooth container"
+                id="slider"
               >
                 {movies?.map((movie, index) => (
                   <MovieCards
                     mediaType={movie?.media_type}
-                    id={movie.id}
                     key={index}
                     size="lg"
-                    title={
-                      movie?.title ||
-                      movie?.original_title ||
-                      movie?.name ||
-                      movie?.original_name
-                    }
-                    image={movie?.backdrop_path || movie?.poster_path}
+                    movie={movie}
                   />
                 ))}
               </div>
@@ -116,10 +110,15 @@ const Content = () => {
             fetchUrl={requests.fetchTrending}
           />
           <Movies
-            caption="Netflix Originals"
-            fetchUrl={requests.fetchNetflixOriginals}
+            caption="Top Rated TV Shows"
+            fetchUrl={requests.fetchNewTV}
+            type="tv"
           />
-          <Movies caption="Top Rated" fetchUrl={requests.fetchTopRated} />
+          <Movies
+            caption="Action movies"
+            type="movie"
+            fetchUrl={requests.fetchActionMovies}
+          />
         </div>
       )}
     </>

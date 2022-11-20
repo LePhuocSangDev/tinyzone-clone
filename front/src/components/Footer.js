@@ -3,7 +3,7 @@ import React from "react";
 const Footer = () => {
   return (
     <div className="text-white text-center">
-      <ul className=" flex justify-center">
+      <ul className=" flex justify-center flex-wrap">
         <li className="p-4 text-l">
           <a href="">Android App</a>
         </li>
