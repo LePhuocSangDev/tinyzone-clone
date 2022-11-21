@@ -4,7 +4,7 @@ const moviesRequest = axios.create({
 });
 
 export const userRequest = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: "https://movie-0b55.onrender.com/api",
 });
 
 export default moviesRequest;
