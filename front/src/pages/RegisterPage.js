@@ -1,56 +1,94 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { login, register } from "../features/apiCall";
 import { selectUser } from "../features/userSlice";
-const RegisterPage = () => {
-  const dispatch = useDispatch();
-  const [username, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { register as registerUser } from "../features/apiCall";
 
-  const handleRegister = () => {
-    register(dispatch, {
-      username,
-      email,
-      password,
-    });
-  };
+import * as yup from "yup";
+
+const schema = yup
+  .object({
+    username: yup
+      .string()
+      .min(5, "Please enter minimum 5 letters")
+      .max(25, "Please enter maximum 25 letters")
+      .required("Don't leave this field empty"),
+    email: yup
+      .string()
+      .email("Invalid email, Example: youremail@example.com")
+      .required("Don't leave this field empty"),
+    password: yup
+      .string()
+      .min(5, "Please enter minimum 5 letters")
+      .max(25, "Please enter maximum 25 letters")
+      .required("Don't leave this field empty"),
+  })
+  .required();
+const RegisterPage = () => {
+  const { isFetching } = useSelector(selectUser);
+  const {
+    resetField,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+    },
+  });
+  const dispatch = useDispatch();
 
   return (
     <div className="text-white flex justify-center items-center w-screen h-screen">
-      <div className="rounded-[5px] bg-[#352a2a] w-[400px] h-[400px]">
+      <div className="rounded-[5px] bg-[#352a2a] w-[90%] max-w-[400px] h-[400px]">
         <div className="p-6">
           <h2 className="text-center text-2xl font-bold py-4">Welcome</h2>
-          <form className="">
+          <form
+            id="form1"
+            onSubmit={handleSubmit((data) => {
+              registerUser(dispatch, data);
+              resetField("username");
+              resetField("email");
+              resetField("password");
+            })}
+          >
             <label htmlFor="">USERNAME</label>
             <input
-              onChange={(e) => setUserName(e.target.value)}
+              {...register("username", { required: true })}
               className="w-full p-2 my-2 rounded-[5px] text-[#aaa] outline-none "
               type="text"
               placeholder="Enter your username"
             />
+            <p className="text-[red]">{errors.username?.message}</p>
             <label htmlFor="">EMAIL ADDRESS</label>
             <input
-              onChange={(e) => setEmail(e.target.value)}
+              {...register("email", { required: true })}
               className="w-full p-2 my-2 rounded-[5px] text-[#aaa] outline-none "
               type="text"
               placeholder="name@email.com"
             />
+            <p className="text-[red]">{errors.email?.message}</p>
             <label htmlFor="">PASSWORD</label>
             <input
-              onChange={(e) => setPassword(e.target.value)}
+              {...register("password", { required: true })}
               className="w-full p-2 my-2 rounded-[5px] text-[#aaa] outline-none "
               type="password"
               placeholder="Password"
             />
+            <p className="text-[red]">{errors.password?.message}</p>
           </form>
-          <button
-            onClick={handleRegister}
-            className="w-full bg-[#9b1a29] py-2 rounded-[5px] my-2 hover:opacity-60"
-          >
-            Register
-          </button>
+          <input
+            form="form1"
+            value="Register"
+            type="submit"
+            disabled={isFetching}
+            className="disabled:cursor-not-allowed w-full bg-[#9b1a29] py-2 rounded-[5px] my-2 hover:opacity-60 cursor-pointer disabled:opacity-40"
+          />
         </div>
 
         <div className="flex justify-center items-center border-t border-white w-full bg-[#444] h-[64px] ">

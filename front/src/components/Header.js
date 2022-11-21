@@ -15,7 +15,7 @@ const Header = () => {
   };
   return (
     <div className="h-[100px] px-2 text-white md:h-[50px] bg-[#1f1f1f] sticky top-0 right-0 left-0 z-10">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center px-2">
         <div className="flex items-center relative">
           <button onClick={handleShow}>
             <AiOutlineMenu style={{ margin: "4px" }} />
