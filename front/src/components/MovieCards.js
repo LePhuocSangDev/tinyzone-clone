@@ -22,8 +22,8 @@ const MovieCards = ({ movie, mediaType, size }) => {
         onMouseOut={() => setShow(false)}
         onClick={() => refreshPage()} // load again to prevent no loading similar movie when click
         className={`${
-          size === "lg" && "w-[25vw] min-w-[200px]  "
-        } m-2 min-w-[35%] sm:min-w-[30%] md:min-w-[25%] hover:opacity-60 cursor-pointer`}
+          size === "lg" && "w-[20vw] max-w-[240px] min-w-[190px]"
+        } min-w-[35%] sm:min-w-[30%] md:min-w-[25%] hover:opacity-60 cursor-pointer`}
       >
         {/* // Play button */}
         <div className="relative w-full h-full">
@@ -36,9 +36,7 @@ const MovieCards = ({ movie, mediaType, size }) => {
           </div>
           <img
             className="w-full h-full object-cover"
-            src={`https://image.tmdb.org/t/p/original/${
-              movie?.backdrop_path || movie?.poster_path
-            }`}
+            src={`https://image.tmdb.org/t/p/w500/${movie?.poster_path}`}
             alt="/"
           />
         </div>
