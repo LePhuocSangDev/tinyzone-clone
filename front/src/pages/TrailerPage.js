@@ -78,7 +78,7 @@ const TrailerPage = () => {
           {/* for mobile */}
           <div className="flex-1 flex gap-2 flex-col lg:hidden">
             <a
-              href={`https://2embed.org/embed/movie?tmdb=${id}`}
+              href={`https://www.2embed.to/embed/tmdb/movie?id=${id}`}
               className="w-full px-2 py-2 block text-white rounded-sm text-center bg-[#9b1a29]"
             >
               Watch Now
@@ -95,9 +95,7 @@ const TrailerPage = () => {
             <div className="flex gap-4 border-b-4 border-b-[#333] pb-6">
               <div className="flex-1  lg:flex-col gap-8 hidden lg:block ">
                 <img
-                  src={`https://image.tmdb.org/t/p/w500/${
-                    movie?.backdrop_path || movie?.poster_path
-                  }`}
+                  src={`https://image.tmdb.org/t/p/w500/${movie?.poster_path}`}
                   alt=""
                   className="h-auto"
                 />
@@ -270,7 +268,7 @@ const TrailerPage = () => {
           </div>
           <div>
             <p className="text-white text-2xl">You may also like</p>
-            <div className="grid grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-[8px]">
               {similarMovies?.map((movie, index) => (
                 <MovieCards
                   mediaType={movie?.media_type}
