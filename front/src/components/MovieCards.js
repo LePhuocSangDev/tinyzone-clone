@@ -23,7 +23,7 @@ const MovieCards = ({ movie, mediaType, size }) => {
         onClick={() => refreshPage()} // load again to prevent no loading similar movie when click
         className={`${
           size === "lg" && "w-[20vw] max-w-[240px] min-w-[190px]"
-        } min-w-[35%] sm:min-w-[30%] md:min-w-[25%] hover:opacity-60 cursor-pointer`}
+        } hover:opacity-60 cursor-pointer`}
       >
         {/* // Play button */}
         <div className="relative w-full h-full">
